@@ -1,0 +1,231 @@
+# Enum for question types
+enum QuestionType {
+  SINGLE
+  MULTI
+  BOOLEAN
+  INSTANCE_LIST
+}
+
+# Input type for answers
+input AnswerInput {
+  questionId: ID!
+  value: String
+  values: [String]
+  booleanValue: Boolean
+  instanceList: [InstanceInput]
+  comments: String
+}
+
+# Input type for instance list items
+input InstanceInput {
+  instanceType: String!
+  quantity: Int!
+}
+
+input UpdateAssessmentInput {
+  assessmentIdd: ID!
+  businessObjective: String
+  specificRequirements: String
+  completed: Boolean
+}
+
+# Type for instance list items
+type Instance {
+  instanceType: String!
+  quantity: Int!
+}
+
+# Type for answers
+type Answer {
+  questionId: ID!
+  value: String
+  values: [String]
+  booleanValue: Boolean
+  instanceList: [Instance]
+  comments: String
+  lastUpdated: String!
+}
+
+# Type for questions
+type Question {
+  questionId: ID!
+  section: String!
+  type: QuestionType!
+  options: [String]
+  answer: Answer
+}
+
+# Type for sections
+type Section {
+  sectionId: ID!
+  name: String!
+  questions: [Question!]!
+}
+
+type Template {
+  templateId: ID!
+  ownerId: String!
+  name: String!
+  sections: [Section!]!
+  version: Int!
+}
+
+# Type for Assessments
+type Assessment @aws_cognito_user_pools {
+  assessmentId: ID!
+  ownerId: String!
+  name: String!
+  description: String
+  template: Template!
+  progress: Progress
+}
+
+# Type for Parts
+type Part @aws_cognito_user_pools {
+  partId: Int!
+  partName: String!
+  partCategory: String!
+  unitPrice: Int!
+}
+
+# Type for Orders
+type Order @aws_cognito_user_pools {
+  orderId: Int!
+  partId: Int!
+  orderDate: String!
+  quantityOrdered: Int!
+  fulfilled: Boolean!
+}
+
+# Type for Shipments
+type Shipment @aws_cognito_user_pools {
+  shipmentId: Int!
+  partId: Int!
+  shipmentDate: String!
+  quantityShipped: Int!
+}
+
+type PartLeadTime @aws_cognito_user_pools {
+  partName: String!
+  avgLeadTime: Int!
+}
+
+type PartBackorderRate @aws_cognito_user_pools {
+  partName: String!
+  backorderRate: Float!
+}
+
+type PartOrderFillRate @aws_cognito_user_pools {
+  partName: String!
+  orderFillRate: Float!
+}
+
+type PartSafetyStockLevel @aws_cognito_user_pools {
+  partName: String!
+  demandStddev: Float!
+  avgLeadTime: Float!
+  safetyStockLevel: Float!
+}
+
+# Query type
+type Query {
+  getAssessment(assessmentId: ID!): Assessment @aws_cognito_user_pools
+  listAssessments: [Assessment] @aws_cognito_user_pools
+  listParts: [Part] @aws_cognito_user_pools
+  getPart(partId: Int!): Part @aws_cognito_user_pools
+  listOrders: [Order] @aws_cognito_user_pools
+  getOrder(orderId: Int!): Order @aws_cognito_user_pools
+  listShipments: [Shipment] @aws_cognito_user_pools
+  getShipment(shipmentId: Int!): Shipment @aws_cognito_user_pools
+  calculateLeadTime: [PartLeadTime!]! @aws_cognito_user_pools
+  calculateBackOrderRate: [PartBackorderRate!]! @aws_cognito_user_pools
+  calculateOrderFillRate: [PartOrderFillRate!]! @aws_cognito_user_pools
+  calculateSafetyStockLevel: [PartSafetyStockLevel!]! @aws_cognito_user_pools
+}
+
+# Type for progress tracking
+type Progress {
+  completedQuestions: [ID]!
+  lastUpdated: String!
+}
+
+# Input type for creating/updating part
+input CreatePartInput {
+  partId: Int!
+  partName: String!
+  partCategory: String!
+  unitPrice: Int!
+}
+
+input UpdatePartInput {
+  partId: Int!
+  partName: String
+  partCategory: String
+  unitPrice: Int
+}
+
+# Input type for creating/updating order
+input CreateOrderInput {
+  orderId: Int!
+  partId: Int!
+  orderDate: String!
+  quantityOrdered: Int!
+  fulfilled: Boolean!
+}
+
+input UpdateOrderInput {
+  orderId: Int!
+  partId: Int
+  orderDate: String
+  quantityOrdered: Int
+  fulfilled: Boolean
+}
+
+# Input type for creating/updating order
+input CreateShipmentInput {
+  shipmentId: Int!
+  partId: Int!
+  shipmentDate: String!
+  quantityShipped: Int!
+}
+
+input UpdateShipmentInput {
+  shipmentId: Int!
+  partId: Int
+  shipmentDate: String
+  quantityShipped: Int
+}
+
+# Mutation type
+type Mutation {
+  createAssessment(
+    templateId: String!
+    versionId: String!
+    name: String!
+  ): Assessment @aws_cognito_user_pools
+  updateAssessment(input: UpdateAssessmentInput!): Assessment
+    @aws_cognito_user_pools
+  deleteAssessment(id: ID!): Assessment @aws_cognito_user_pools
+  updateAnswer(userId: ID!, assessmentId: ID!, answer: AnswerInput!): Progress
+    @aws_cognito_user_pools
+  updateProgress(
+    userId: ID!
+    assessmentId: ID!
+    completedQuestionId: ID!
+  ): Progress @aws_cognito_user_pools
+  createPart(input: CreatePartInput!): Part @aws_cognito_user_pools
+  updatePart(input: UpdatePartInput!): Part @aws_cognito_user_pools
+  deletePart(partId: Int!): Part @aws_cognito_user_pools
+  createOrder(input: CreateOrderInput!): Order @aws_cognito_user_pools
+  updateOrder(input: UpdateOrderInput!): Order @aws_cognito_user_pools
+  deleteOrder(orderId: Int!): Order @aws_cognito_user_pools
+  createShipment(input: CreateShipmentInput!): Shipment @aws_cognito_user_pools
+  updateShipment(input: UpdateShipmentInput!): Shipment @aws_cognito_user_pools
+  deleteShipment(shipmentId: Int!): Shipment @aws_cognito_user_pools
+}
+
+# Schema definition
+schema {
+  query: Query
+  mutation: Mutation
+}

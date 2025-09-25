@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const cdk = require("aws-cdk-lib");
+require("source-map-support/register");
+const gmra_stack_1 = require("../lib/gmra-stack");
+const cdk_nag_1 = require("cdk-nag");
+const config_1 = require("./config");
+const aws_cdk_lib_1 = require("aws-cdk-lib");
+const app = new cdk.App();
+const config = (0, config_1.getConfig)();
+new gmra_stack_1.GMRAStack(app, `${config.prefix}GMRAStack`, {
+    config,
+    env: {
+        region: process.env.CDK_DEFAULT_REGION,
+        account: process.env.CDK_DEFAULT_ACCOUNT,
+    },
+});
+aws_cdk_lib_1.Aspects.of(app).add(new cdk_nag_1.AwsSolutionsChecks({ verbose: true }));
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZ21yYS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbImdtcmEudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQ0EsbUNBQW1DO0FBQ25DLHVDQUFxQztBQUNyQyxrREFBOEM7QUFDOUMscUNBQTZDO0FBQzdDLHFDQUFxQztBQUNyQyw2Q0FBc0M7QUFFdEMsTUFBTSxHQUFHLEdBQUcsSUFBSSxHQUFHLENBQUMsR0FBRyxFQUFFLENBQUM7QUFFMUIsTUFBTSxNQUFNLEdBQUcsSUFBQSxrQkFBUyxHQUFFLENBQUM7QUFFM0IsSUFBSSxzQkFBUyxDQUFDLEdBQUcsRUFBRSxHQUFHLE1BQU0sQ0FBQyxNQUFNLFdBQVcsRUFBRTtJQUM5QyxNQUFNO0lBQ04sR0FBRyxFQUFFO1FBQ0gsTUFBTSxFQUFFLE9BQU8sQ0FBQyxHQUFHLENBQUMsa0JBQWtCO1FBQ3RDLE9BQU8sRUFBRSxPQUFPLENBQUMsR0FBRyxDQUFDLG1CQUFtQjtLQUN6QztDQUNGLENBQUMsQ0FBQztBQUVILHFCQUFPLENBQUMsRUFBRSxDQUFDLEdBQUcsQ0FBQyxDQUFDLEdBQUcsQ0FBQyxJQUFJLDRCQUFrQixDQUFDLEVBQUUsT0FBTyxFQUFFLElBQUksRUFBRSxDQUFDLENBQUMsQ0FBQyIsInNvdXJjZXNDb250ZW50IjpbIiMhL3Vzci9iaW4vZW52IG5vZGVcbmltcG9ydCAqIGFzIGNkayBmcm9tIFwiYXdzLWNkay1saWJcIjtcbmltcG9ydCBcInNvdXJjZS1tYXAtc3VwcG9ydC9yZWdpc3RlclwiO1xuaW1wb3J0IHsgR01SQVN0YWNrIH0gZnJvbSBcIi4uL2xpYi9nbXJhLXN0YWNrXCI7XG5pbXBvcnQgeyBBd3NTb2x1dGlvbnNDaGVja3MgfSBmcm9tIFwiY2RrLW5hZ1wiO1xuaW1wb3J0IHsgZ2V0Q29uZmlnIH0gZnJvbSBcIi4vY29uZmlnXCI7XG5pbXBvcnQgeyBBc3BlY3RzIH0gZnJvbSBcImF3cy1jZGstbGliXCI7XG5cbmNvbnN0IGFwcCA9IG5ldyBjZGsuQXBwKCk7XG5cbmNvbnN0IGNvbmZpZyA9IGdldENvbmZpZygpO1xuXG5uZXcgR01SQVN0YWNrKGFwcCwgYCR7Y29uZmlnLnByZWZpeH1HTVJBU3RhY2tgLCB7XG4gIGNvbmZpZyxcbiAgZW52OiB7XG4gICAgcmVnaW9uOiBwcm9jZXNzLmVudi5DREtfREVGQVVMVF9SRUdJT04sXG4gICAgYWNjb3VudDogcHJvY2Vzcy5lbnYuQ0RLX0RFRkFVTFRfQUNDT1VOVCxcbiAgfSxcbn0pO1xuXG5Bc3BlY3RzLm9mKGFwcCkuYWRkKG5ldyBBd3NTb2x1dGlvbnNDaGVja3MoeyB2ZXJib3NlOiB0cnVlIH0pKTtcbiJdfQ==
