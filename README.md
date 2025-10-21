@@ -115,6 +115,8 @@ Now that you've deployed the solution and loaded sample data, let's test the Gra
 
 The AWS AppSync Console provides a built-in query editor that makes it easy to test your GraphQL API. Follow these steps to get started:
 
+> **Additional Resources**: For more details on using the AppSync console, see the [AWS AppSync Console documentation](https://docs.aws.amazon.com/appsync/latest/devguide/console-tour.html#queries-editor).
+
 #### Step 1: Access the AppSync Console
 
 1. Open the AWS Console and navigate to the **AWS AppSync** service
@@ -136,6 +138,8 @@ Since this API uses Amazon Cognito for authentication, you need to log in before
 Once authenticated, you'll see a success message and can start running queries.
 
 > **Note**: If you don't have a Cognito user yet, you can create one in the Amazon Cognito console under User Pools, or use the AWS CLI to create a user for testing purposes.
+
+> **Additional Resources**: Learn more about [configuring Amazon Cognito User Pools authorization](https://docs.aws.amazon.com/appsync/latest/devguide/security-authz.html#amazon-cognito-user-pools-authorization) in AppSync.
 
 ### Analytics & Calculations Operations
 
