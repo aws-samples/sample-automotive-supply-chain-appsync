@@ -111,12 +111,31 @@ Step 7. Once deployed, take note of the relevant parameters from the deployment 
 
 Now that you've deployed the solution and loaded sample data, let's test the GraphQL API to see how it provides valuable insights into your supply chain operations. We'll focus on the analytics and calculations that help optimize your automotive supply chain.
 
-### Getting Started with GraphQL Queries
+### Setting Up the AppSync Console for Testing
 
-After deployment, you'll find your AppSync GraphQL endpoint URL in the CloudFormation outputs. You can test these queries using:
-- AWS AppSync Console (recommended for beginners)
-- GraphQL clients like Postman or Insomnia
-- AWS CLI with AppSync commands
+The AWS AppSync Console provides a built-in query editor that makes it easy to test your GraphQL API. Follow these steps to get started:
+
+#### Step 1: Access the AppSync Console
+
+1. Open the AWS Console and navigate to the **AWS AppSync** service
+2. Select your deployed API from the list (it should match the name from your CDK deployment)
+3. In the left sidebar, click on **Queries**
+
+#### Step 2: Authenticate with Amazon Cognito
+
+Since this API uses Amazon Cognito for authentication, you need to log in before running queries:
+
+1. In the Queries page, look for the **Login with User Pools** button at the top
+2. Click the button to open the authentication dialog
+3. Enter your Cognito user credentials:
+   - **ClientId**: Found in the CloudFormation outputs or Cognito User Pool settings
+   - **Username**: Your Cognito user username
+   - **Password**: Your Cognito user password
+4. Click **Login**
+
+Once authenticated, you'll see a success message and can start running queries.
+
+> **Note**: If you don't have a Cognito user yet, you can create one in the Amazon Cognito console under User Pools, or use the AWS CLI to create a user for testing purposes.
 
 ### Analytics & Calculations Operations
 
@@ -186,11 +205,47 @@ query CalculateSafetyStockLevel {
 
 ### Running Your First Test
 
-1. Open the AWS AppSync Console
-2. Navigate to your deployed GraphQL API
-3. Go to the "Queries" section
-4. Copy and paste any of the above queries
-5. Click "Run Query" to see your results
+Now that you're authenticated, let's run your first analytics query:
+
+1. In the query editor (left panel), **delete any existing sample code**
+2. **Copy and paste** one of the analytics queries from above (start with Calculate Lead Time)
+3. Click the **orange play button** (▶) at the top of the editor
+4. View the results in the right panel
+
+**Example workflow:**
+```graphql
+# Paste this query in the editor
+query CalculateLeadTime {
+  calculateLeadTime {
+    partName
+    avgLeadTime
+  }
+}
+```
+
+After clicking the play button, you should see results like:
+```json
+{
+  "data": {
+    "calculateLeadTime": [
+      {
+        "partName": "Engine Block",
+        "avgLeadTime": 15
+      },
+      {
+        "partName": "Brake Pads",
+        "avgLeadTime": 7
+      }
+    ]
+  }
+}
+```
+
+**Tips for testing:**
+- You can run multiple queries by separating them in the editor
+- Use the query name dropdown (if multiple queries exist) to select which one to execute
+- The console provides auto-complete (Ctrl+Space) to help you write queries
+- Check the **Logs** tab at the bottom if you encounter any errors
 
 ### Understanding the Results
 
