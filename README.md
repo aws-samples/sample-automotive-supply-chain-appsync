@@ -107,7 +107,159 @@ Step 7. Once deployed, take note of the relevant parameters from the deployment 
 6. Verify that all transactions succeeded
    ![check-result-operations](./assets/check-result-operations.png)
 
-## Test the solution TASK
+## Test the solution
+
+Now that you've deployed the solution and loaded sample data, let's test the GraphQL API to see how it provides valuable insights into your supply chain operations. We'll focus on the analytics and calculations that help optimize your automotive supply chain.
+
+### Setting Up the AppSync Console for Testing
+
+The AWS AppSync Console provides a built-in query editor that makes it easy to test your GraphQL API. Follow these steps to get started:
+
+> **Additional Resources**: For more details on using the AppSync console, see the [AWS AppSync Console documentation](https://docs.aws.amazon.com/appsync/latest/devguide/console-tour.html#queries-editor).
+
+#### Step 1: Access the AppSync Console
+
+1. Open the AWS Console and navigate to the **AWS AppSync** service
+2. Select your deployed API from the list (it should match the name from your CDK deployment)
+3. In the left sidebar, click on **Queries**
+
+#### Step 2: Authenticate with Amazon Cognito
+
+Since this API uses Amazon Cognito for authentication, you need to log in before running queries:
+
+1. In the Queries page, look for the **Login with User Pools** button at the top
+2. Click the button to open the authentication dialog
+3. Enter your Cognito user credentials:
+   - **ClientId**: Found in the CloudFormation outputs or Cognito User Pool settings
+   - **Username**: Your Cognito user username
+   - **Password**: Your Cognito user password
+4. Click **Login**
+
+Once authenticated, you'll see a success message and can start running queries.
+
+> **Note**: If you don't have a Cognito user yet, you can create one in the Amazon Cognito console under User Pools, or use the AWS CLI to create a user for testing purposes.
+
+> **Additional Resources**: Learn more about [configuring Amazon Cognito User Pools authorization](https://docs.aws.amazon.com/appsync/latest/devguide/security-authz.html#amazon-cognito-user-pools-authorization) in AppSync.
+
+### Analytics & Calculations Operations
+
+These operations analyze your supply chain data to provide actionable insights:
+
+#### 1. Calculate Lead Time
+
+This query calculates the average lead time for each part by analyzing the time difference between orders and shipments.
+
+```graphql
+query CalculateLeadTime {
+  calculateLeadTime {
+    partName
+    avgLeadTime
+  }
+}
+```
+
+**What this tells you:** How long it typically takes from placing an order to receiving shipment for each part. Use this to improve procurement planning and set realistic delivery expectations.
+
+#### 2. Calculate Backorder Rate
+
+This query identifies parts with high backorder rates, indicating potential supply chain bottlenecks.
+
+```graphql
+query CalculateBackOrderRate {
+  calculateBackOrderRate {
+    partName
+    backorderRate
+  }
+}
+```
+
+**What this tells you:** The percentage of orders that couldn't be fulfilled immediately. High backorder rates suggest you need to increase safety stock or find alternative suppliers.
+
+#### 3. Calculate Order Fill Rate
+
+This query measures how effectively you're fulfilling orders for each part.
+
+```graphql
+query CalculateOrderFillRate {
+  calculateOrderFillRate {
+    partName
+    orderFillRate
+  }
+}
+```
+
+**What this tells you:** The percentage of orders successfully fulfilled. A low fill rate indicates supply issues that need immediate attention.
+
+#### 4. Calculate Safety Stock Level
+
+This query recommends optimal safety stock levels based on demand variability and lead times.
+
+```graphql
+query CalculateSafetyStockLevel {
+  calculateSafetyStockLevel {
+    partName
+    demandStddev
+    avgLeadTime
+    safetyStockLevel
+  }
+}
+```
+
+**What this tells you:** The recommended minimum inventory level to maintain for each part to avoid stockouts. Higher safety stock levels are suggested for parts with variable demand or longer lead times.
+
+### Running Your First Test
+
+Now that you're authenticated, let's run your first analytics query:
+
+1. In the query editor (left panel), **delete any existing sample code**
+2. **Copy and paste** one of the analytics queries from above (start with Calculate Lead Time)
+3. Click the **orange play button** (▶) at the top of the editor
+4. View the results in the right panel
+
+**Example workflow:**
+```graphql
+# Paste this query in the editor
+query CalculateLeadTime {
+  calculateLeadTime {
+    partName
+    avgLeadTime
+  }
+}
+```
+
+After clicking the play button, you should see results like:
+```json
+{
+  "data": {
+    "calculateLeadTime": [
+      {
+        "partName": "Engine Block",
+        "avgLeadTime": 15
+      },
+      {
+        "partName": "Brake Pads",
+        "avgLeadTime": 7
+      }
+    ]
+  }
+}
+```
+
+**Tips for testing:**
+- You can run multiple queries by separating them in the editor
+- Use the query name dropdown (if multiple queries exist) to select which one to execute
+- The console provides auto-complete (Ctrl+Space) to help you write queries
+- Check the **Logs** tab at the bottom if you encounter any errors
+
+### Understanding the Results
+
+Each query returns data that helps you make informed decisions:
+- **Lead times** help with procurement planning
+- **Backorder rates** identify supply chain risks
+- **Fill rates** measure operational efficiency
+- **Safety stock levels** optimize inventory management
+
+Try running all four analytics queries to get a comprehensive view of your supply chain performance!
 
 ## Conclusion
 
