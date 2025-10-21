@@ -107,7 +107,100 @@ Step 7. Once deployed, take note of the relevant parameters from the deployment 
 6. Verify that all transactions succeeded
    ![check-result-operations](./assets/check-result-operations.png)
 
-## Test the solution TASK
+## Test the solution
+
+Now that you've deployed the solution and loaded sample data, let's test the GraphQL API to see how it provides valuable insights into your supply chain operations. We'll focus on the analytics and calculations that help optimize your automotive supply chain.
+
+### Getting Started with GraphQL Queries
+
+After deployment, you'll find your AppSync GraphQL endpoint URL in the CloudFormation outputs. You can test these queries using:
+- AWS AppSync Console (recommended for beginners)
+- GraphQL clients like Postman or Insomnia
+- AWS CLI with AppSync commands
+
+### Analytics & Calculations Operations
+
+These operations analyze your supply chain data to provide actionable insights:
+
+#### 1. Calculate Lead Time
+
+This query calculates the average lead time for each part by analyzing the time difference between orders and shipments.
+
+```graphql
+query CalculateLeadTime {
+  calculateLeadTime {
+    partName
+    avgLeadTime
+  }
+}
+```
+
+**What this tells you:** How long it typically takes from placing an order to receiving shipment for each part. Use this to improve procurement planning and set realistic delivery expectations.
+
+#### 2. Calculate Backorder Rate
+
+This query identifies parts with high backorder rates, indicating potential supply chain bottlenecks.
+
+```graphql
+query CalculateBackOrderRate {
+  calculateBackOrderRate {
+    partName
+    backorderRate
+  }
+}
+```
+
+**What this tells you:** The percentage of orders that couldn't be fulfilled immediately. High backorder rates suggest you need to increase safety stock or find alternative suppliers.
+
+#### 3. Calculate Order Fill Rate
+
+This query measures how effectively you're fulfilling orders for each part.
+
+```graphql
+query CalculateOrderFillRate {
+  calculateOrderFillRate {
+    partName
+    orderFillRate
+  }
+}
+```
+
+**What this tells you:** The percentage of orders successfully fulfilled. A low fill rate indicates supply issues that need immediate attention.
+
+#### 4. Calculate Safety Stock Level
+
+This query recommends optimal safety stock levels based on demand variability and lead times.
+
+```graphql
+query CalculateSafetyStockLevel {
+  calculateSafetyStockLevel {
+    partName
+    demandStddev
+    avgLeadTime
+    safetyStockLevel
+  }
+}
+```
+
+**What this tells you:** The recommended minimum inventory level to maintain for each part to avoid stockouts. Higher safety stock levels are suggested for parts with variable demand or longer lead times.
+
+### Running Your First Test
+
+1. Open the AWS AppSync Console
+2. Navigate to your deployed GraphQL API
+3. Go to the "Queries" section
+4. Copy and paste any of the above queries
+5. Click "Run Query" to see your results
+
+### Understanding the Results
+
+Each query returns data that helps you make informed decisions:
+- **Lead times** help with procurement planning
+- **Backorder rates** identify supply chain risks
+- **Fill rates** measure operational efficiency
+- **Safety stock levels** optimize inventory management
+
+Try running all four analytics queries to get a comprehensive view of your supply chain performance!
 
 ## Conclusion
 
