@@ -51,7 +51,7 @@ The architecture includes:
 Step 1. Clone the repository.
 
 ```bash
-git clone git@ssh.gitlab.aws.dev:obertoa/blog-supply-chain-automotive.git
+git clone https://github.com/aws-samples/sample-automotive-supply-chain-appsync.git
 ```
 
 Step 2. Move into the cloned repository.
