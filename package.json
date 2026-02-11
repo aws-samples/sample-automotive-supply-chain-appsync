@@ -47,7 +47,7 @@
     "@aws-appsync/utils": "^1.9.0",
     "@aws-lambda-powertools/batch": "^2.26.0",
     "@aws-lambda-powertools/logger": "^2.26.1",
-    "@aws-sdk/client-appsync": "^3.883.0",
+    "@aws-sdk/client-appsync": "^3.987.0",
     "@aws-sdk/util-dynamodb": "^3.883.0",
     "@cdklabs/generative-ai-cdk-constructs": "^0.1.309",
     "aws-cdk-lib": "^2.216.0",
